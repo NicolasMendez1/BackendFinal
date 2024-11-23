@@ -66,12 +66,19 @@ export default class CursoRepository {
         try{
             const sql = `
             BEGIN
-            
+                GH_ACTUALIZAR_CURSO(:codigo,:nombre,:horasCatedra,:horasLaboratorio,:nivel,:esAtemporal,:esCursoGeneral,:cantidadEstudiantes);
             END;
             `;
-      
-            const binds = {
 
+            const binds = {
+                codigo:id,
+                nombre: curso.nombre,
+                horasCatedra: curso.horasCatedra,
+                horasLaboratorio: curso.horasLaboratorio,
+                nivel: curso.nivel,
+                esAtemporal: curso.esAtemporal ? 1 : 0,
+                esCursoGeneral: curso.esCursoGeneral ? 1 : 0,
+                cantidadEstudiantes: curso.cantidadDeEstudiantes
             };
 
             await DbConnection.executeQuery(sql, binds);          
