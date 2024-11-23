@@ -14,7 +14,17 @@ export default class CursoRepository {
 
     async deleteCurso(id:any) {
         try {
-            await DbConnection.executeQuery('DELETE FROM GH_CURSO WHERE CODIGO = :id',{id:id});
+            const sql = `
+            BEGIN
+              GH_ELIMINAR_CURSO(:codigo);
+            END;
+          `;
+
+          const binds = {
+            codigo: id
+          };
+
+        await DbConnection.executeQuery(sql, binds);
 
         } catch (error) {
             console.error('Error al eliminar curso:', error);

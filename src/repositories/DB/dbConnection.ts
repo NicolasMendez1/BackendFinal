@@ -13,15 +13,15 @@ export default class DbConnection {
     private static connection: oracledb.Connection | null = null;
 
     static async getConnection(): Promise<oracledb.Connection> {
-        if (!this.connection) {
+        //if (!this.connection) {
             try {
                 this.connection = await oracledb.getConnection(dbConfig);
+                return this.connection;
             } catch (error) {
                 console.error('Error al obtener la conexión:', error);
                 throw new Error('No se pudo establecer conexión con la base de datos');
             }
-        }
-        return this.connection;
+        //}
     }
 
     static async closeConnection(): Promise<void> {
@@ -42,11 +42,10 @@ export default class DbConnection {
                 outFormat: oracledb.OUT_FORMAT_OBJECT,
                 autoCommit: true // Aseguramos que los cambios se guarden
             });
+            await this.closeConnection();
             return result.rows;
         } catch (error) {
             throw error;
         }
     }
 }
-
-
