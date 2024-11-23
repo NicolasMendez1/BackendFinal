@@ -52,7 +52,9 @@ export default class CursoRepository {
             cantidadDeEstudiantes: curso.cantidadDeEstudiantes
           };
 
-        await DbConnection.executeQuery(sql, binds)
+         await DbConnection.executeQuery(sql, binds);
+
+         return curso;
 
         } catch (error) {
             console.error('Error al eliminar curso:', error);
