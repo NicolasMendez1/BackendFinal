@@ -44,6 +44,7 @@ class CursoController {
             const id = req.params.id;
             const cursoEditado = req.body;
             await cursoRepository.updateCurso(id, cursoEditado);
+            console.log("Update de Curso")
             res.status(200).send();
         }
         catch (error: any) {

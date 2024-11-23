@@ -30,7 +30,7 @@ async function testCursos() {
 
         const cursoEditado = {
             codigo: "TEST002",
-            nombre: "Curso de Prueba",
+            nombre: "Curso de Prueba editado",
             horasCatedra: 4,
             horasLaboratorio: 2,
             nivel: 1,
