@@ -13,10 +13,15 @@ class CursoController {
     }
 
     async deleteCurso(req: Request, res: Response) {
-        const id = req.params.id;
-        console.log("Eliminado Id"+ id)
-        await cursoRepository.deleteCurso(id)
-        res.status(200).send()
+        try {
+            const id = req.params.id;
+            console.log("Eliminado Id"+ id)
+            await cursoRepository.deleteCurso(id)
+            res.status(200).send()
+        } catch (error) {
+            console.error('Error al eliminar curso:', error);
+            res.status(500).send('Error al eliminar curso');
+        }
     }
     
     async createCurso(req: Request, res: Response) {
