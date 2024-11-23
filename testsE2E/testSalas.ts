@@ -8,12 +8,10 @@ async function testSalas() {
             .expect(200);
 
         const nuevaSala = {
-            codigo: "TEST-S001",
-            nombre: "Sala de Prueba",
-            capacidad: 30,
-            tipoSala: "LABORATORIO",
-            edificio: "A",
-            piso: 1
+            "codigo": "A101",
+            "nombre": "Sala de Conferencias",
+            "capacidad": 50,
+            "esLaboratorio": false
         };
 
         await request(app)

@@ -8,13 +8,12 @@ async function testSecciones() {
             .expect(200);
 
         const nuevaSeccion = {
-            numero: 1,
-            año: 2024,
-            semestre: 1,
-            cupos: 30,
-            cursoCodigo: "TEST002",
-            profesorRut: "11111111-1",
-            salaCodigo: "TEST-S001"
+            "codigo": "S01",
+            "codigoProfesor": 12345,
+            "codigoCurso": "MAT101",
+            "codigoSalaCatedra": "A101",
+            "codigoSalaLaboratorio": "B202",
+            "cantidadDeEstudiantesSeccion": 30
         };
 
         await request(app)
@@ -23,7 +22,7 @@ async function testSecciones() {
             .expect(201);
 
         await request(app)
-            .delete(`/secciones/${nuevaSeccion.numero}/${nuevaSeccion.año}/${nuevaSeccion.semestre}`)
+            .delete(`/secciones/${nuevaSeccion.codigo}`)
             .expect(200);
 
         console.log('>>EXITO<< E2E TestSecciones');
