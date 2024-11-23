@@ -18,12 +18,17 @@ class CursoController {
         await cursoRepository.deleteCurso(id)
         res.status(200).send()
     }
-
     
     async createCurso(req: Request, res: Response) {
-        const nuevoCurso = req.body;
-        console.log(req.body)
-        res.status(200).send()
+        try {   
+            const nuevoCurso = req.body;
+            console.log(req.body)
+            await cursoRepository.createCurso(nuevoCurso)
+            res.status(200).send()
+        } catch (error) {
+            console.error('Error al crear curso:', error);
+            res.status(500).send('Error al crear curso');
+        }
     }
 
 
