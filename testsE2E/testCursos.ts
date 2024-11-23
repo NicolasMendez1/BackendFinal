@@ -41,6 +41,7 @@ async function testCursos() {
 
         await request(app)
             .put(`/cursos/${nuevoCurso.codigo}`)
+            .send(cursoEditado)
             .expect(200);
 
         console.log('>>EXITO<< E2E TestCursos');
