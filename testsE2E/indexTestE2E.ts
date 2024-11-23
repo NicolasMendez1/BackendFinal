@@ -6,9 +6,9 @@ import testSecciones from './testSecciones';
 async function runE2ETests() {
     try {
         await testCursos();
-        //await testSalas();
+        await testSalas();
         await testProfesores();
-        //await testSecciones();
+        await testSecciones();
         
     } catch (error) {
         console.error('Error durante la ejecución de las pruebas E2E:', error);

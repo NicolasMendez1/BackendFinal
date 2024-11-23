@@ -12,6 +12,56 @@ export default class SeccionRepository {
         }
     }
 
+    async deleteSeccion(id:any,id2:any) {
+        try {
+            const sql = `
+            BEGIN
+              GH_ELIMINAR_SECCION(:codigo, :codigoCurso);
+            END;
+          `;
+
+          const binds = {
+            codigo: id,
+            codigoCurso: id2
+          };
+
+        await DbConnection.executeQuery(sql, binds);
+
+        } catch (error) {
+            console.error('Error al eliminar seccion:', error);
+            throw error;
+        }
+    }
+
+    async createSeccion(seccion:Seccion) {
+
+        try {
+            const sql = `
+            BEGIN
+              GH_INSERTAR_SECCION(:codigo, :codigoProfesor, :codigoCurso, :codigoSalaCatedra, :codigoSalaLaboratorio, :cantidadEstudiantesSeccion);
+            END;
+          `;
+      
+          const binds = {
+            codigo: seccion.codigo,
+            codigoProfesor: seccion.codigoProfesor,
+            codigoCurso: seccion.codigoCurso,
+            codigoSalaCatedra: seccion.codigoSalaCatedra,
+            codigoSalaLaboratorio: seccion.codigoSalaLaboratorio,
+            cantidadEstudiantesSeccion: seccion.cantidadDeEstudiantesSeccion
+          };
+
+         await DbConnection.executeQuery(sql, binds);
+
+         return seccion;
+
+        } catch (error) {
+            console.error('Error al crear seccion:', error);
+            throw error;
+        }
+    }
+
+
     private mapRowToJson(row: any): Seccion {
         return {
             codigo: row.CODIGO,
