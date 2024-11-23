@@ -5,5 +5,7 @@ const salaRouter = express.Router();
 const salaController = new SalaController();
 
 salaRouter.get('/', salaController.getSalas);
+salaRouter.delete('/:id',salaController.deleteSala)
+salaRouter.post('/', salaController.createSala)
 
 export default salaRouter;
