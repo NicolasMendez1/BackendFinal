@@ -8,12 +8,11 @@ async function testProfesores() {
             .expect(200);
 
         const nuevoProfesor = {
-            rut: "11111111-1",
-            nombre: "Profesor Test",
-            correo: "profesor.test@usach.cl",
-            telefono: "+56911111111",
-            oficina: "Test Office",
-            jornada: "COMPLETA"
+            "codigo": 12345,
+            "nombre": "Juan",
+            "apellidoMaterno": "Pérez",
+            "apellidoPaterno": "González",
+            "esFullTime": true
         };
 
         await request(app)
@@ -22,7 +21,7 @@ async function testProfesores() {
             .expect(201);
 
         await request(app)
-            .delete(`/profesores/${nuevoProfesor.rut}`)
+            .delete(`/profesores/${nuevoProfesor.codigo}`)
             .expect(200);
 
         console.log('>>EXITO<< E2E TestProfesores');
