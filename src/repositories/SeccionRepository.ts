@@ -61,6 +61,35 @@ export default class SeccionRepository {
         }
     }
 
+    async updateSeccion(id:any,id2:any, seccion:Seccion) {
+      try{
+          const sql = `
+          BEGIN
+              GH_ACTUALIZAR_SECCION(:codigo,:codigoProfesor,:codigoCurso,:codigoSalaCatedra,:codigoSalaLaboratorio,:cantidadDeEstudiantesSeccion);
+          END;
+          `;
+
+          const binds = {
+              codigo:id,
+              codigoProfesor: seccion.codigoProfesor,
+              codigoCurso: id2,
+              codigoSalaCatedra: seccion.codigoSalaCatedra,
+              codigoSalaLaboratorio: seccion.codigoSalaLaboratorio,
+              cantidadDeEstudiantesSeccion: seccion.cantidadDeEstudiantesSeccion        
+          };
+
+          await DbConnection.executeQuery(sql, binds);          
+      }
+      catch (error) {
+          console.error('Error al actualizar Seccion:', error);
+          throw error;
+      }
+  }
+
+
+
+
+
 
     private mapRowToJson(row: any): Seccion {
         return {

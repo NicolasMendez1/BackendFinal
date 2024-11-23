@@ -59,6 +59,30 @@ export default class SalaRepository {
         }
     }
 
+    async updateSala(id:any, sala:Sala) {
+      try{
+          const sql = `
+          BEGIN
+              GH_ACTUALIZAR_SALA(:codigo,:nombre,:capacidad, :esLaboratorio);
+          END;
+          `;
+
+          const binds = {
+              codigo:id,
+              nombre: sala.nombre,
+              capacidad: sala.capacidad,
+              esLaboratorio: sala.esLaboratorio ? 1 : 0
+          };
+
+          await DbConnection.executeQuery(sql, binds);          
+      }
+      catch (error) {
+          console.error('Error al actualizar sala:', error);
+          throw error;
+      }
+  }
+
+
     private mapRowToJson(row: any): Sala {
         return {
             codigo: row.CODIGO,

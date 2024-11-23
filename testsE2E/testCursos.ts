@@ -40,11 +40,11 @@ async function testCursos() {
             .send(cursoEditado)
             .expect(200);
 
-        /*    
+           
         await request(app)
             .delete(`/cursos/${nuevoCurso.codigo}`)
             .expect(200);
-        */
+        
 
         console.log('>>EXITO<< E2E TestCursos');
     } catch (error) {

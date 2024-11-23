@@ -38,6 +38,27 @@ class SalaController {
             });
         }
     }
+
+    async updateSala(req: Request, res: Response) {
+        try {   
+            const id = req.params.id;
+            const salaEditada = req.body;
+            await salaRepository.updateSala(id, salaEditada);
+            console.log("Update de Sala")
+            res.status(200).send();
+        }
+        catch (error: any) {
+            res.status(500).json({
+                error: 'Error al actualizar Sala',
+                details: error.message
+            });
+        }
+    }
+
+
+
+
+
 }
 
 export default SalaController;

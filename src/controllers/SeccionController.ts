@@ -39,6 +39,25 @@ class SeccionController {
             });
         }
     }
+
+    async updateSeccion(req: Request, res: Response) {
+        try {   
+            const id = req.params.id;
+            const id2 = req.params.id;
+            const seccionEditada = req.body;
+            await seccionRepository.updateSeccion(id,id2, seccionEditada);
+            console.log("Update de Seccion")
+            res.status(200).send();
+        }
+        catch (error: any) {
+            res.status(500).json({
+                error: 'Error al actualizar seccion',
+                details: error.message
+            });
+        }
+    }
+
+
 }
 
 export default SeccionController;

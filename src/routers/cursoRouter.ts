@@ -5,7 +5,7 @@ const cursoRouter = express.Router();
 const cursoController = new CursoController();
 
 cursoRouter.get('/', cursoController.getCursos);
-cursoRouter.delete('/:id',cursoController.deleteCurso)
-cursoRouter.post('/', cursoController.createCurso)
-cursoRouter.put('/:id', cursoController.updateCurso)
+cursoRouter.delete('/:id',cursoController.deleteCurso);
+cursoRouter.post('/', cursoController.createCurso);
+cursoRouter.put('/:id', cursoController.updateCurso);
 export default cursoRouter;

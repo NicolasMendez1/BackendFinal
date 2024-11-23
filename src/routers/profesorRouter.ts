@@ -5,6 +5,7 @@ const profesorRouter = express.Router();
 const profesorController = new ProfesorController();
 
 profesorRouter.get('/', profesorController.getProfesor);
-profesorRouter.delete('/:id',profesorController.deleteProfesor)
-profesorRouter.post('/', profesorController.createProfesor)
+profesorRouter.delete('/:id',profesorController.deleteProfesor);
+profesorRouter.post('/', profesorController.createProfesor);
+profesorRouter.put('/:id', profesorController.updateProfesor);
 export default profesorRouter;

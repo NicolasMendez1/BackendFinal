@@ -39,6 +39,22 @@ class ProfesorController {
         }
     }
 
+    async updateProfesor(req: Request, res: Response) {
+        try {   
+            const id = req.params.id;
+            const profesorEditado = req.body;
+            await profesorRepository.updateProfesor(id, profesorEditado);
+            console.log("Update de Profesor")
+            res.status(200).send();
+        }
+        catch (error: any) {
+            res.status(500).json({
+                error: 'Error al actualizar Profesor',
+                details: error.message
+            });
+        }
+    }
+
 
 
 }

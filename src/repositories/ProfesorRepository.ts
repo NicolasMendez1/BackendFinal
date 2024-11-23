@@ -61,6 +61,32 @@ export default class ProfesorRepository {
         }
     }
 
+    async updateProfesor(id:any, profesor:Profesor) {
+      try{
+          const sql = `
+          BEGIN
+              GH_ACTUALIZAR_PROFESOR(:codigo,:nombre,:apellidoPaterno,:apellidoMaterno,:esFullTime);
+          END;
+          `;
+
+          const binds = {
+              codigo:id,
+              nombre: profesor.nombre,
+              apellidoPaterno: profesor.apellidoPaterno,
+              apellidoMaterno: profesor.apellidoMaterno,
+              esFullTime: profesor.esFullTime ? 1 : 0
+          };
+
+          await DbConnection.executeQuery(sql, binds);          
+      }
+      catch (error) {
+          console.error('Error al actualizar profesor:', error);
+          throw error;
+      }
+  }
+
+
+
     private mapRowToJson(row: any): Profesor {
         return {
             codigo: row.CODIGO,
