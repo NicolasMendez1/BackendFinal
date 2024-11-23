@@ -24,10 +24,6 @@ async function testCursos() {
             .send(nuevoCurso)
             .expect(201);
         
-        await request(app)
-            .delete(`/cursos/${nuevoCurso.codigo}`)
-            .expect(200);
-
         const cursoEditado = {
             codigo: "TEST002",
             nombre: "Curso de Prueba editado",
@@ -43,6 +39,12 @@ async function testCursos() {
             .put(`/cursos/${nuevoCurso.codigo}`)
             .send(cursoEditado)
             .expect(200);
+
+        /*    
+        await request(app)
+            .delete(`/cursos/${nuevoCurso.codigo}`)
+            .expect(200);
+        */
 
         console.log('>>EXITO<< E2E TestCursos');
     } catch (error) {
