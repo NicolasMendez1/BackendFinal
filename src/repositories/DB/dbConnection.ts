@@ -38,21 +38,12 @@ export default class DbConnection {
     static async executeQuery(query: string, binds: any = {}): Promise<any> {
         const connection = await this.getConnection();
         try {
-            console.log('Ejecutando query:', query);
-            console.log('Con parámetros:', binds);
-            
             const result = await connection.execute(query, binds, { 
                 outFormat: oracledb.OUT_FORMAT_OBJECT,
                 autoCommit: true // Aseguramos que los cambios se guarden
             });
-            
             return result.rows;
         } catch (error) {
-            console.error('Error detallado al ejecutar la consulta:', {
-                query: query,
-                binds: binds,
-                error: error
-            });
             throw error;
         }
     }

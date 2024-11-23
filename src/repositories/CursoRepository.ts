@@ -25,31 +25,24 @@ export default class CursoRepository {
     async createCurso(curso:Curso) {
 
         try {
-            const query = `
-            INSERT INTO GH_CURSO (
-                CODIGO, 
-                NOMBRE, 
-                HORAS_CATEDRA, 
-                HORAS_LABORATORIO, 
-                NIVEL, 
-                ES_ATEMPORAL, 
-                ES_CURSO_GENERAL, 
-                CANTIDAD_DE_ESTUDIANTES
-            ) 
-            VALUES (:codigo, :nombre, :horasCatedra, :horasLaboratorio, :nivel, :esAtemporal, :esCursoGeneral, :cantidadDeEstudiantes);
-        `;
-        const values = {
+            const sql = `
+            BEGIN
+              GH_INSERTAR_CURSO(:codigo, :nombre, :horasCatedra, :horasLaboratorio, :nivel, :esAtemporal, :esCursoGeneral, :cantidadDeEstudiantes);
+            END;
+          `;
+      
+          const binds = {
             codigo: curso.codigo,
             nombre: curso.nombre,
             horasCatedra: curso.horasCatedra,
             horasLaboratorio: curso.horasLaboratorio,
             nivel: curso.nivel,
-            esAtemporal: curso.esAtemporal,
-            esCursoGeneral: curso.esCursoGeneral,
+            esAtemporal: curso.esAtemporal ? 1 : 0,
+            esCursoGeneral: curso.esCursoGeneral ? 1 : 0,
             cantidadDeEstudiantes: curso.cantidadDeEstudiantes
-        };
+          };
 
-        await DbConnection.executeQuery(query, values)
+        await DbConnection.executeQuery(sql, binds)
 
         } catch (error) {
             console.error('Error al eliminar curso:', error);
