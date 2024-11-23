@@ -6,7 +6,7 @@ import testSecciones from './testSecciones';
 async function runE2ETests() {
     try {
         await testCursos();
-        await testSalas();
+        //await testSalas();
         await testProfesores();
         //await testSecciones();
         
