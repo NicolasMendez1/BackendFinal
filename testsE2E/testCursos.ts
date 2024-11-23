@@ -1,23 +1,15 @@
 import request from 'supertest';
-import express from 'express';
-import cursoRouter from '../src/routers/cursoRouter';
-
-const app = express();
-app.use(express.json());
-app.use('/cursos', cursoRouter);
+import app from './testSetup';
 
 async function testCursos() {
     try {
-        console.log('TEST --> Iniciando pruebas de cursos...');
-
-        const getCursosResponse = await request(app)
+        
+        await request(app)
             .get('/cursos')
             .expect(200);
-        
-        console.log('TEST --> GET /cursos - OK');
 
         const nuevoCurso = {
-            codigo: "TEST001",
+            codigo: "TEST002",
             nombre: "Curso de Prueba",
             horasCatedra: 4,
             horasLaboratorio: 2,
@@ -26,24 +18,20 @@ async function testCursos() {
             esCursoGeneral: true,
             cantidadDeEstudiantes: 30
         };
-
-        const postResponse = await request(app)
+        
+        await request(app)
             .post('/cursos')
             .send(nuevoCurso)
             .expect(201);
-
-        console.log('TEST --> POST /cursos - OK');
-
+        
         await request(app)
             .delete(`/cursos/${nuevoCurso.codigo}`)
             .expect(200);
 
-        console.log(`TEST --> DELETE /cursos/${nuevoCurso.codigo} - OK`);
-
-        console.log('TEST --> Pruebas E2E de TestCursos completadas exitosamente');
+        console.log('>>EXITO<< E2E TestCursos');
     } catch (error) {
-        console.error('TEST --> E2E Error en pruebas de TestCursos:', error);
+        console.error('>>ERROR<< E2E TestCursos:', error);
     }
 }
 
-testCursos();
+export default testCursos;

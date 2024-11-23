@@ -5,8 +5,7 @@
   "scripts": {
     "dev": "ts-node-dev src/index.ts",
     "tsc": "tsc",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "testE2E": "ts-node testsE2E/indexTestE2E.ts"
+    "test": "ts-node testsE2E/indexTestE2E.ts"
   },
   "keywords": [],
   "author": "",
