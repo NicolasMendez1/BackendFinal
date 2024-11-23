@@ -34,7 +34,7 @@ async function testCursos() {
             .expect(201);
 
         console.log('POST /cursos - OK');
-        console.log(`Curso creado: ${postResponse.body}`);
+        console.log('Curso creado:', JSON.stringify(postResponse.body, null, 2));
 
         await request(app)
             .delete(`/cursos/${nuevoCurso.codigo}`)
