@@ -8,14 +8,13 @@ app.use('/cursos', cursoRouter);
 
 async function testCursos() {
     try {
-        console.log('Iniciando pruebas de cursos...');
+        console.log('TEST --> Iniciando pruebas de cursos...');
 
         const getCursosResponse = await request(app)
             .get('/cursos')
             .expect(200);
         
-        console.log('GET /cursos - OK');
-        console.log('Cursos obtenidos:', getCursosResponse.body);
+        console.log('TEST --> GET /cursos - OK');
 
         const nuevoCurso = {
             codigo: "TEST001",
@@ -33,19 +32,17 @@ async function testCursos() {
             .send(nuevoCurso)
             .expect(201);
 
-        console.log('POST /cursos - OK');
-        console.log('Curso creado:', JSON.stringify(postResponse.body, null, 2));
+        console.log('TEST --> POST /cursos - OK');
 
         await request(app)
             .delete(`/cursos/${nuevoCurso.codigo}`)
             .expect(200);
 
-        console.log(`DELETE /cursos/${nuevoCurso.codigo} - OK`);
-        console.log('Curso eliminado exitosamente');
+        console.log(`TEST --> DELETE /cursos/${nuevoCurso.codigo} - OK`);
 
-        console.log('pruebas E2E de TestCursos completadas exitosamente');
+        console.log('TEST --> Pruebas E2E de TestCursos completadas exitosamente');
     } catch (error) {
-        console.error('E2E Error en pruebas de TestCursos:', error);
+        console.error('TEST --> E2E Error en pruebas de TestCursos:', error);
     }
 }
 
