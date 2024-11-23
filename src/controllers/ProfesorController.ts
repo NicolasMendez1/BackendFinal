@@ -11,6 +11,36 @@ class ProfesorController {
         res.json(profesor);
         console.log("RESPUESTA -> GET -> /profesores");
     }
+
+    async deleteProfesor(req: Request, res: Response) {
+        try {
+            const id = req.params.id;
+            console.log("Eliminado Id"+ id)
+            await profesorRepository.deleteProfesor(id)
+            res.status(200).send()
+        } catch (error) {
+            console.error('Error al eliminar Profesor:', error);
+            res.status(500).send('Error al eliminar Profesor');
+        }
+    }
+    
+    async createProfesor(req: Request, res: Response) {
+        try {   
+            const nuevoProfesor = req.body;
+            const profesorCreado = await profesorRepository.createProfesor(nuevoProfesor);
+            console.log('Profesor creado exitosamente:', profesorCreado);
+            
+            res.status(201).json(profesorCreado);
+        } catch (error: any) {
+            res.status(500).json({
+                error: 'Error al crear profesor',
+                details: error.message
+            });
+        }
+    }
+
+
+
 }
 
 export default ProfesorController;

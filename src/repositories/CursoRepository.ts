@@ -57,7 +57,7 @@ export default class CursoRepository {
          return curso;
 
         } catch (error) {
-            console.error('Error al eliminar curso:', error);
+            console.error('Error al crear curso:', error);
             throw error;
         }
     }
