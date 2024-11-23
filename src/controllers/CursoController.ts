@@ -6,8 +6,10 @@ const cursoRepository = new CursoRepository();
 
 class CursoController {
     async getCursos(req: Request, res: Response) {
+        console.log("GET -> /cursos");
         const cursos: Curso[] =  await cursoRepository.getCursos();
         res.json(cursos);
+        console.log("RESPUESTA -> GET -> /cursos");
     }
 }
 

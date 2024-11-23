@@ -1,4 +1,4 @@
-import { DbConnection } from './dbConnection';
+import DbConnection from './DB/dbConnection';
 import { Curso } from '../entities/Curso';
 
 export default class CursoRepository {

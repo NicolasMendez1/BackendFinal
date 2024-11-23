@@ -9,7 +9,7 @@ const dbConfig = {
     connectString: process.env.DB_CONNECTION_STRING
 };
 
-export class DbConnection {
+export default class DbConnection {
     private static connection: oracledb.Connection | null = null;
 
     static async getConnection(): Promise<oracledb.Connection> {
@@ -46,3 +46,5 @@ export class DbConnection {
         }
     }
 }
+
+
