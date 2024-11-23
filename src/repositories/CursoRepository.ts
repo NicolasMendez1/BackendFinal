@@ -62,6 +62,26 @@ export default class CursoRepository {
         }
     }
 
+    async updateCurso(id:any, curso:Curso) {
+        try{
+            const sql = `
+            BEGIN
+            
+            END;
+            `;
+      
+            const binds = {
+
+            };
+
+            await DbConnection.executeQuery(sql, binds);          
+        }
+        catch (error) {
+            console.error('Error al actualizar curso:', error);
+            throw error;
+        }
+    }
+
 
 
     private mapRowToJson(row: any): Curso {

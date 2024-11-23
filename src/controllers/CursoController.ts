@@ -39,6 +39,21 @@ class CursoController {
         }
     }
 
+    async updateCurso(req: Request, res: Response) {
+        try {   
+            const id = req.params.id;
+            const cursoEditado = req.body;
+            await cursoRepository.updateCurso(id, cursoEditado);
+            res.status(200).send();
+        }
+        catch (error: any) {
+            res.status(500).json({
+                error: 'Error al actualizar curso',
+                details: error.message
+            });
+        }
+    }
+
 
 
 }

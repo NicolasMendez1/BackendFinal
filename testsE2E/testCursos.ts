@@ -28,6 +28,21 @@ async function testCursos() {
             .delete(`/cursos/${nuevoCurso.codigo}`)
             .expect(200);
 
+        const cursoEditado = {
+            codigo: "TEST002",
+            nombre: "Curso de Prueba",
+            horasCatedra: 4,
+            horasLaboratorio: 2,
+            nivel: 1,
+            esAtemporal: false,
+            esCursoGeneral: true,
+            cantidadDeEstudiantes: 30
+        };
+
+        await request(app)
+            .put(`/cursos/${nuevoCurso.codigo}`)
+            .expect(200);
+
         console.log('>>EXITO<< E2E TestCursos');
     } catch (error) {
         console.error('>>ERROR<< E2E TestCursos:', error);
