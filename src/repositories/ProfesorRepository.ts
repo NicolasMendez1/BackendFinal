@@ -47,7 +47,7 @@ export default class ProfesorRepository {
             codigo: profesor.codigo,
             nombre: profesor.nombre,
             apellidoPaterno: profesor.apellidoPaterno,
-            horasLaboratorio: profesor.apellidoMaterno,
+            apellidoMaterno: profesor.apellidoMaterno,
             esFullTime: profesor.esFullTime ? 1 : 0
           };
 
