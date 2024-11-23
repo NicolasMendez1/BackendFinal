@@ -14,7 +14,7 @@ export default class CursoRepository {
 
     async deleteCurso(id:any) {
         try {
-            await DbConnection.executeQuery('DELETE FROM GH_CURSO WHERE CODIGO = :id',[id]);
+            await DbConnection.executeQuery('DELETE FROM GH_CURSO WHERE CODIGO = :id',{id:id});
 
         } catch (error) {
             console.error('Error al eliminar curso:', error);
@@ -36,19 +36,18 @@ export default class CursoRepository {
                 ES_CURSO_GENERAL, 
                 CANTIDAD_DE_ESTUDIANTES
             ) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+            VALUES (:codigo, :nombre, :horasCatedra, :horasLaboratorio, :nivel, :esAtemporal, :esCursoGeneral, :cantidadDeEstudiantes);
         `;
-
-        const values = [
-            curso.codigo,
-            curso.nombre,
-            curso.horasCatedra,
-            curso.horasLaboratorio,
-            curso.nivel,
-            curso.esAtemporal,
-            curso.esCursoGeneral,
-            curso.cantidadDeEstudiantes
-        ];
+        const values = {
+            codigo: curso.codigo,
+            nombre: curso.nombre,
+            horasCatedra: curso.horasCatedra,
+            horasLaboratorio: curso.horasLaboratorio,
+            nivel: curso.nivel,
+            esAtemporal: curso.esAtemporal,
+            esCursoGeneral: curso.esCursoGeneral,
+            cantidadDeEstudiantes: curso.cantidadDeEstudiantes
+        };
 
         await DbConnection.executeQuery(query, values)
 

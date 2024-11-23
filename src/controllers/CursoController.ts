@@ -27,12 +27,27 @@ class CursoController {
     async createCurso(req: Request, res: Response) {
         try {   
             const nuevoCurso = req.body;
-            console.log(req.body)
-            await cursoRepository.createCurso(nuevoCurso)
-            res.status(200).send()
-        } catch (error) {
-            console.error('Error al crear curso:', error);
-            res.status(500).send('Error al crear curso');
+            console.log('Datos recibidos para crear curso:', nuevoCurso);
+            
+            // Validación básica
+            if (!nuevoCurso.nombre) {
+                return res.status(400).json({ error: 'El nombre del curso es requerido' });
+            }
+
+            const cursoCreado = await cursoRepository.createCurso(nuevoCurso);
+            console.log('Curso creado exitosamente:', cursoCreado);
+            
+            res.status(201).json(cursoCreado);
+        } catch (error: any) {
+            console.error('Error detallado al crear curso:', {
+                message: error.message,
+                stack: error.stack,
+                errorDetails: error
+            });
+            res.status(500).json({
+                error: 'Error al crear curso',
+                details: error.message
+            });
         }
     }
 
