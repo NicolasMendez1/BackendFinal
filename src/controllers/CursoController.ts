@@ -11,6 +11,23 @@ class CursoController {
         res.json(cursos);
         console.log("RESPUESTA -> GET -> /cursos");
     }
+
+    async deleteCurso(req: Request, res: Response) {
+        const id = req.params.id;
+        console.log("Eliminado Id"+ id)
+        await cursoRepository.deleteCurso(id)
+        res.status(200).send()
+    }
+
+    
+    async createCurso(req: Request, res: Response) {
+        const nuevoCurso = req.body;
+        console.log(req.body)
+        res.status(200).send()
+    }
+
+
+
 }
 
 export default CursoController;

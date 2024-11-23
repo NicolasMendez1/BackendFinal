@@ -4,7 +4,7 @@ import salaRouter from "./routers/salaRouter";
 import profesorRouter from "./routers/profesorRouter";
 
 const app = express();
-
+app.use(express.json());
 app.use('/cursos', cursoRouter);
 app.use('/salas', salaRouter);
 app.use('/profesores', profesorRouter);

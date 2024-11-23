@@ -12,6 +12,54 @@ export default class CursoRepository {
         }
     }
 
+    async deleteCurso(id:any) {
+        try {
+            await DbConnection.executeQuery('DELETE FROM GH_CURSO WHERE CODIGO = :id',[id]);
+
+        } catch (error) {
+            console.error('Error al eliminar curso:', error);
+            throw error;
+        }
+    }
+
+    async createCurso(curso:Curso) {
+
+        try {
+            const query = `
+            INSERT INTO GH_CURSO (
+                CODIGO, 
+                NOMBRE, 
+                HORAS_CATEDRA, 
+                HORAS_LABORATORIO, 
+                NIVEL, 
+                ES_ATEMPORAL, 
+                ES_CURSO_GENERAL, 
+                CANTIDAD_DE_ESTUDIANTES
+            ) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+        `;
+
+        const values = [
+            curso.codigo,
+            curso.nombre,
+            curso.horasCatedra,
+            curso.horasLaboratorio,
+            curso.nivel,
+            curso.esAtemporal,
+            curso.esCursoGeneral,
+            curso.cantidadDeEstudiantes
+        ];
+
+        await DbConnection.executeQuery(query, values)
+
+        } catch (error) {
+            console.error('Error al eliminar curso:', error);
+            throw error;
+        }
+    }
+
+
+
     private mapRowToJson(row: any): Curso {
         return {
             codigo: row.CODIGO,
