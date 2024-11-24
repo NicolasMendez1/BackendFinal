@@ -42,6 +42,8 @@ export default class ProfesorRepository {
               GH_INSERTAR_PROFESOR(:codigo, :nombre, :apellidoPaterno, :apellidoMaterno, :esFullTime);
             END;
           `;
+
+
       
           const binds = {
             codigo: profesor.codigo,
@@ -68,6 +70,8 @@ export default class ProfesorRepository {
               GH_ACTUALIZAR_PROFESOR(:codigo,:nombre,:apellidoPaterno,:apellidoMaterno,:esFullTime);
           END;
           `;
+
+          
 
           const binds = {
               codigo:id,
