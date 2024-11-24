@@ -1,47 +1,44 @@
 const oracledb = require('oracledb');
+import dotenv from 'dotenv';
+import { Profesor } from '../src/entities/Profesor';
+
+dotenv.config();
+const dbConfig = {
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  connectString: process.env.DB_CONNECTION_STRING
+};
 
 async function insertarProfesorYDisponibilidad() {
   let connection;
 
   try {
-    // Conectar a la base de datos Oracle
-    connection = await oracledb.getConnection({
-      user: 'usuario',  // Tu usuario de la base de datos
-      password: 'contraseña',  // Tu contraseña de la base de datos
-      connectString: 'localhost/XE'  // O tu cadena de conexión
-    });
+    connection = await oracledb.getConnection(dbConfig);
 
-    const codigo = 1;  // Código del profesor
+    const codigo = 136;
     const nombre = 'Juan';
     const apellidoPaterno = 'Pérez';
     const apellidoMaterno = 'Gómez';
-    const esFullTime = 1;  // 1 para Full-Time, 0 para Part-Time
-    const disponibilidad = new Array(72).fill(0);  // 72 elementos, todos en 0 (puedes ajustarlos)
+    const esFullTime = 1;
+    const disponibilidad = new Array(72).fill(0);
 
-    // Supón que quieres configurar disponibilidad para algunos bloques
-    disponibilidad[0] = 1;  // Disponible en día 1, bloque 1
-    disponibilidad[1] = 1;  // Disponible en día 1, bloque 2
-    // ... (rellenar el array con los valores correspondientes)
+    disponibilidad[0] = 1;
+    disponibilidad[1] = 1;
 
-    // Llamada al procedimiento PL/SQL
     await connection.execute(
-      `BEGIN
-         GH_insertar_profesor_y_disponibilidad(
-           :p_codigo,
-           :p_nombre,
-           :p_apellido_paterno,
-           :p_apellido_materno,
-           :p_es_full_time,
-           :p_disponibilidad
-         );
+      `DECLARE
+         v_array NUM_ARRAY := NUM_ARRAY();
+       BEGIN
+         v_array.EXTEND(72);
+         ${disponibilidad.map((val, idx) => `v_array(${idx + 1}) := ${val};`).join('\n')}
+         GH_insertar_profesor_y_disponibilidad(:p_codigo,:p_nombre,:p_apellido_paterno,:p_apellido_materno,:p_es_full_time,v_array);
        END;`,
       {
         p_codigo: codigo,
         p_nombre: nombre,
         p_apellido_paterno: apellidoPaterno,
         p_apellido_materno: apellidoMaterno,
-        p_es_full_time: esFullTime,
-        p_disponibilidad: { type: oracledb.NUMBER, dir: oracledb.BIND_IN, val: disponibilidad }
+        p_es_full_time: esFullTime
       }
     );
 

@@ -103,7 +103,7 @@ export default class ProfesorRepository {
             throw error;
         }
     }
-
+ 
     private mapRowToJson(row: any): Profesor {
         return {
             codigo: row.CODIGO,

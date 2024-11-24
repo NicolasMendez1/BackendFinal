@@ -1,38 +1,32 @@
+
+
 const oracledb = require('oracledb');
 import dotenv from 'dotenv';
+import { Profesor } from '../src/entities/Profesor';
 
 dotenv.config();
 
-interface ProfesorConDisponibilidad {
-  CODIGO: string;
-  NOMBRE: string;
-  APELLIDO_PATERNO: string;
-  APELLIDO_MATERNO: string;
-  ES_FULL_TIME: number;
-  ESTADO_BLOQUES_DIAS: string;
-}
 
 function convertirDisponibilidad(arrayDe72: number[]): boolean[][] {
-    const bloquesDisponibles = [];
-    
-    // Recorremos el array original y lo convertimos en subarrays
-    for (let i = 0; i < 6; i++) {
-        // Cada subarray contendrá 12 valores de disponibilidad
-        let bloqueDia = arrayDe72.slice(i * 12, (i + 1) * 12).map(valor => valor === 1);  // Convertir 0 -> false y 1 -> true
-        bloquesDisponibles.push(bloqueDia);
-    }
-    
-    return bloquesDisponibles;
+  const bloquesDisponibles = [];
+
+  // Recorremos el array original y lo convertimos en subarrays
+  for (let i = 0; i < 6; i++) {
+    // Cada subarray contendrá 12 valores de disponibilidad
+    let bloqueDia = arrayDe72.slice(i * 12, (i + 1) * 12).map(valor => valor === 1);  // Convertir 0 -> false y 1 -> true
+    bloquesDisponibles.push(bloqueDia);
+  }
+
+  return bloquesDisponibles;
 }
 
-
 const dbConfig = {
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    connectString: process.env.DB_CONNECTION_STRING
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  connectString: process.env.DB_CONNECTION_STRING
 };
 
-async function obtenerProfesoresConDisponibilidad(): Promise<ProfesorConDisponibilidad[]> {
+async function obtenerProfesoresConDisponibilidad(): Promise<Profesor[]> {
   let connection;
 
   try {
@@ -49,19 +43,9 @@ async function obtenerProfesoresConDisponibilidad(): Promise<ProfesorConDisponib
       FROM GH_PROFESOR p
     `);
 
-    const profesores: ProfesorConDisponibilidad[] = result.rows || [];
-    
-    profesores.forEach((profesor) => {
-      console.log('Código:', profesor.CODIGO);
-      console.log('Nombre:', profesor.NOMBRE);
-      console.log('Apellido Paterno:', profesor.APELLIDO_PATERNO);
-      console.log('Apellido Materno:', profesor.APELLIDO_MATERNO);
-      console.log('Es Full Time:', profesor.ES_FULL_TIME);
-      console.log('Estado Bloques Dias:', profesor.ESTADO_BLOQUES_DIAS);
-      console.log('-------------------------');
-    });
+    const profesores: any[] = result.rows || [];
 
-    return profesores;
+    return profesores.map(mapRowToJson);
 
   } catch (err) {
     console.error('Error al ejecutar la consulta:', err);
@@ -75,11 +59,24 @@ async function obtenerProfesoresConDisponibilidad(): Promise<ProfesorConDisponib
       }
     }
   }
+
+}
+
+function mapRowToJson(row: any): Profesor {
+  return {
+      codigo: row.CODIGO,
+      nombre: row.NOMBRE,
+      apellidoPaterno: row.APELLIDO_PATERNO,
+      apellidoMaterno: row.APELLIDO_MATERNO,
+      esFullTime: row.ES_FULL_TIME,
+      bloquesDisponibles: convertirDisponibilidad(JSON.parse(JSON.stringify(row.ESTADO_BLOQUES_DIAS)))
+  };
 }
 
 async function main() {
   try {
-    const profesores = await obtenerProfesoresConDisponibilidad();
+    const profesores: Profesor[] = await obtenerProfesoresConDisponibilidad();
+    console.log(profesores[0].bloquesDisponibles);
     console.log('Total de profesores obtenidos:', profesores.length);
   } catch (error) {
     console.error('Error en la ejecución principal:', error);
@@ -87,6 +84,8 @@ async function main() {
 }
 
 main();
+
+
 
 
 
