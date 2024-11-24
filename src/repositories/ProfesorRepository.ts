@@ -81,45 +81,25 @@ export default class ProfesorRepository {
     }
 
 
-    async insertarProfesorPrueba(): Promise<void> {
-        const profesorPrueba: Profesor = {
-            codigo: 136,
-            nombre: 'Juan',
-            apellidoPaterno: 'Pérez',
-            apellidoMaterno: 'Gómez',
-            esFullTime: true,
-            bloquesDisponibles: Array(6).fill(Array(12).fill(false)).map((dia, i) => {
-                if (i === 0) {
-                    const primerDia = [...dia];
-                    primerDia[0] = true;
-                    primerDia[1] = true;
-                    return primerDia;
-                }
-                return dia;
-            })
-        };
-
-        await this.createProfesor(profesorPrueba);
-    }
-
     async updateProfesor(id: number, profesor: Profesor): Promise<void> {
         try {
             // Primero actualizamos los datos básicos del profesor
-            await DbConnection.executeQuery(
-                `UPDATE GH_PROFESOR 
-                 SET nombre = :nombre,
-                     apellido_paterno = :apellido_paterno,
-                     apellido_materno = :apellido_materno,
-                     es_full_time = :es_full_time
-                 WHERE codigo = :codigo`,
-                {
-                    nombre: profesor.nombre,
-                    apellido_paterno: profesor.apellidoPaterno,
-                    apellido_materno: profesor.apellidoMaterno,
-                    es_full_time: profesor.esFullTime ? 1 : 0,
-                    codigo: profesor.codigo
-                }
-            );
+         const sql1 = `
+            BEGIN
+              GH_ACTUALIZAR_PROFESOR(:codigo, :nombre, :apellidoPaterno, :apellidoMaterno, :esFullTime);
+            END;
+          `;
+
+          const binds = {
+            codigo: id,
+            nombre: profesor.nombre,
+            apellidoPaterno: profesor.apellidoPaterno,
+            apellidoMaterno: profesor.apellidoMaterno,
+            esFullTime: profesor.esFullTime ? 1 : 0
+          };
+         
+          await DbConnection.executeQuery(sql1, binds);
+        
 
             // Luego actualizamos la disponibilidad
             const disponibilidadArray = profesor.bloquesDisponibles.flatMap(dia => 
@@ -173,23 +153,16 @@ export default class ProfesorRepository {
             // Eliminamos en orden para mantener la integridad referencial
             const sql = `
                 BEGIN
-                    -- Primero eliminamos la disponibilidad
-                    DELETE FROM GH_PROFESOR_BLOQUES_DISPONIBLES 
-                    WHERE codigo_profesor = :codigo;
-                    
-                    -- Luego eliminamos el profesor
-                    DELETE FROM GH_PROFESOR 
-                    WHERE codigo = :codigo;
-                    
-                    COMMIT;
-                EXCEPTION
-                    WHEN OTHERS THEN
-                        ROLLBACK;
-                        RAISE;
+                    GH_ELIMINAR_PROFESOR_Y_DISPONIBILIDAD(:codigo);
                 END;
             `;
 
-            await DbConnection.executeQuery(sql, { codigo });
+          const binds = {
+            codigo: codigo
+          };
+         
+          await DbConnection.executeQuery(sql, binds);
+
         } catch (error) {
             console.error('Error al eliminar profesor:', error);
             throw error;
