@@ -7,14 +7,14 @@ const profesorRepository = new ProfesorRepository();
 class ProfesorController {
     async getProfesor(req: Request, res: Response) {
         console.log("GET -> /profesores");
-        const profesor: Profesor[] =  await profesorRepository.getProfesor();
+        const profesor: Profesor[] =  await profesorRepository.getProfesores();
         res.json(profesor);
         console.log("RESPUESTA -> GET -> /profesores");
     }
 
     async deleteProfesor(req: Request, res: Response) {
         try {
-            const id = req.params.id;
+            const id = parseInt(req.params.id);
             console.log("Eliminado Id"+ id)
             await profesorRepository.deleteProfesor(id)
             res.status(200).send()
@@ -41,7 +41,7 @@ class ProfesorController {
 
     async updateProfesor(req: Request, res: Response) {
         try {   
-            const id = req.params.id;
+            const id = parseInt(req.params.id);
             const profesorEditado = req.body;
             await profesorRepository.updateProfesor(id, profesorEditado);
             console.log("Update de Profesor")
