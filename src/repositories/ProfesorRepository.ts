@@ -1,6 +1,6 @@
 import { Profesor } from '../entities/Profesor';
 import DbConnection from './DB/dbConnection';
-
+import oracledb from 'oracledb';
 
 export default class ProfesorRepository {
     async getProfesor(): Promise<Profesor[]> {
@@ -13,8 +13,8 @@ export default class ProfesorRepository {
         }
     }
 
-    
-    async deleteProfesor(id:any) {
+
+    async deleteProfesor(id: any) {
         try {
             const sql = `
             BEGIN
@@ -22,11 +22,11 @@ export default class ProfesorRepository {
             END;
           `;
 
-          const binds = {
-            codigo: id
-          };
+            const binds = {
+                codigo: id
+            };
 
-        await DbConnection.executeQuery(sql, binds);
+            await DbConnection.executeQuery(sql, binds);
 
         } catch (error) {
             console.error('Error al eliminar profesor:', error);
@@ -34,28 +34,36 @@ export default class ProfesorRepository {
         }
     }
 
-    async createProfesor(profesor:Profesor) {
+    async createProfesor(profesor: Profesor) {
 
         try {
             const sql = `
             BEGIN
-              GH_INSERTAR_PROFESOR(:codigo, :nombre, :apellidoPaterno, :apellidoMaterno, :esFullTime);
+              GH_INSERTAR_PROFESOR(:codigo, :nombre, :apellidoPaterno, :apellidoMaterno, :esFullTime, :bloquesDisponibles);
             END;
           `;
 
+          const bloquesDisponibles: number[] = profesor.bloquesDisponibles.flat().map(b => b ? 1 : 0);
 
-      
-          const binds = {
-            codigo: profesor.codigo,
-            nombre: profesor.nombre,
-            apellidoPaterno: profesor.apellidoPaterno,
-            apellidoMaterno: profesor.apellidoMaterno,
-            esFullTime: profesor.esFullTime ? 1 : 0
+          const bloquesDisponiblesOracle = {
+              type: oracledb.DB_TYPE_NUMBER,
+              dir: oracledb.BIND_IN,
+              val: bloquesDisponibles
           };
 
-         await DbConnection.executeQuery(sql, binds);
+          const binds = {
+              codigo: profesor.codigo,
+              nombre: profesor.nombre,
+              apellidoPaterno: profesor.apellidoPaterno,
+              apellidoMaterno: profesor.apellidoMaterno,
+              esFullTime: profesor.esFullTime ? 1 : 0,
+              bloquesDisponibles: bloquesDisponiblesOracle
+          };
 
-         return profesor;
+
+            await DbConnection.executeQuery(sql, binds);
+
+            return profesor;
 
         } catch (error) {
             console.error('Error al crear el profesor:', error);
@@ -63,33 +71,38 @@ export default class ProfesorRepository {
         }
     }
 
-    async updateProfesor(id:any, profesor:Profesor) {
-      try{
-          const sql = `
-          BEGIN
-              GH_ACTUALIZAR_PROFESOR(:codigo,:nombre,:apellidoPaterno,:apellidoMaterno,:esFullTime);
-          END;
-          `;
+    async updateProfesor(id: any, profesor: Profesor) {
+        try {
+            const sql = `
+            BEGIN
+                GH_ACTUALIZAR_PROFESOR(:codigo,:nombre,:apellidoPaterno,:apellidoMaterno,:esFullTime,:bloquesDisponibles);
+            END;
+            `;
 
-          
+            const bloquesDisponibles: number[] = profesor.bloquesDisponibles.flat().map(b => b ? 1 : 0);
 
-          const binds = {
-              codigo:id,
-              nombre: profesor.nombre,
-              apellidoPaterno: profesor.apellidoPaterno,
-              apellidoMaterno: profesor.apellidoMaterno,
-              esFullTime: profesor.esFullTime ? 1 : 0
-          };
+            const bloquesDisponiblesOracle = {
+                type: oracledb.DB_TYPE_NUMBER,
+                dir: oracledb.BIND_IN,
+                val: bloquesDisponibles
+            };
 
-          await DbConnection.executeQuery(sql, binds);          
-      }
-      catch (error) {
-          console.error('Error al actualizar profesor:', error);
-          throw error;
-      }
-  }
+            const binds = {
+                codigo: id,
+                nombre: profesor.nombre,
+                apellidoPaterno: profesor.apellidoPaterno,
+                apellidoMaterno: profesor.apellidoMaterno,
+                esFullTime: profesor.esFullTime ? 1 : 0,
+                bloquesDisponibles: bloquesDisponiblesOracle
+            };
 
-
+            await DbConnection.executeQuery(sql, binds);
+        }
+        catch (error) {
+            console.error('Error al actualizar profesor:', error);
+            throw error;
+        }
+    }
 
     private mapRowToJson(row: any): Profesor {
         return {
@@ -97,7 +110,8 @@ export default class ProfesorRepository {
             nombre: row.NOMBRE,
             apellidoPaterno: row.APELLIDO_PATERNO,
             apellidoMaterno: row.APELLIDO_MATERNO,
-            esFullTime: row.ES_FULL_TIME
+            esFullTime: row.ES_FULL_TIME,
+            bloquesDisponibles: row.BLOQUES_DISPONIBLES
         };
     }
 }

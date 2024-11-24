@@ -4,4 +4,5 @@ export interface Profesor {
     apellidoMaterno: string;
     apellidoPaterno: string;
     esFullTime: boolean;
+    bloquesDisponibles: boolean[][];
 } 
