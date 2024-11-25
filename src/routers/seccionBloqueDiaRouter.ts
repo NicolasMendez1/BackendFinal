@@ -4,7 +4,7 @@ import SeccionBloqueDiaController from '../controllers/SeccionBloqueDiaControlle
 const seccionBloqueDiaRouter = express.Router();
 const seccionBloqueDiaController = new SeccionBloqueDiaController();
 
-seccionBloqueDiaRouter.get('/', seccionBloqueDiaRouter.getSeccionBloqueDia);
+seccionBloqueDiaRouter.get('/', seccionBloqueDiaController.getSeccionBloqueDia);
 seccionBloqueDiaRouter.delete('/:id/:id2/:id3/:id4',seccionBloqueDiaController.deleteSeccionBloqueDia);
 seccionBloqueDiaRouter.post('/', seccionBloqueDiaController.createSeccionBloqueDia);
 
