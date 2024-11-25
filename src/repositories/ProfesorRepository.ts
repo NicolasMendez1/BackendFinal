@@ -80,28 +80,6 @@ export default class ProfesorRepository {
         }
     }
 
-
-    async insertarProfesorPrueba(): Promise<void> {
-        const profesorPrueba: Profesor = {
-            codigo: 136,
-            nombre: 'Juan',
-            apellidoPaterno: 'Pérez',
-            apellidoMaterno: 'Gómez',
-            esFullTime: true,
-            bloquesDisponibles: Array(6).fill(Array(12).fill(false)).map((dia, i) => {
-                if (i === 0) {
-                    const primerDia = [...dia];
-                    primerDia[0] = true;
-                    primerDia[1] = true;
-                    return primerDia;
-                }
-                return dia;
-            })
-        };
-
-        await this.createProfesor(profesorPrueba);
-    }
-
     async updateProfesor(id: number, profesor: Profesor): Promise<void> {
         try {
             // Primero actualizamos los datos básicos del profesor
