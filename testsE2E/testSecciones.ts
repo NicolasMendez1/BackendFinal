@@ -16,10 +16,24 @@ async function testSecciones() {
             "cantidadDeEstudiantesSeccion": 30
         };
 
+        const seccionEditada = {
+            "codigo": "S3",
+            "codigoProfesor": 1,
+            "codigoCurso": "INF-113",
+            "codigoSalaCatedra": "I-108",
+            "codigoSalaLaboratorio": "DCI-03",
+            "cantidadDeEstudiantesSeccion": 100
+        };
+
         await request(app)
             .post('/secciones')
             .send(nuevaSeccion)
             .expect(201);
+
+        await request(app)    
+            .put(`/secciones/${nuevaSeccion.codigo}/${nuevaSeccion.codigoCurso}`)
+            .send(seccionEditada)
+            .expect(200)
 
         await request(app)
             .delete(`/secciones/${nuevaSeccion.codigo}/${nuevaSeccion.codigoCurso}`)
