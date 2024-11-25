@@ -16,8 +16,8 @@ class SeccionBloqueDiaController {
         try {
             const id = req.params.id;
             const id2 = req.params.id2;
-            const id3 = req.params.id3;
-            const id4 = req.params.id4;
+            const id3 = parseInt(req.params.id3);
+            const id4 = parseInt(req.params.id4);
             console.log("Eliminado id - id2 - id3 - id4"+ id + id2 + id3 + id4)
             await seccionBloqueDiaRepository.deleteSeccionBloqueDia(id,id2,id3,id4)
             res.status(200).send()
@@ -29,7 +29,7 @@ class SeccionBloqueDiaController {
 
     async createSeccionBloqueDia(req: Request, res: Response) {
         try {   
-            const nuevaSeccionBloqueDia = req.body;
+            const nuevaSeccionBloqueDia: SeccionBloqueDia = req.body;
             const seccionBloqueDiaCreada = await seccionBloqueDiaRepository.createSeccionBloqueDia(nuevaSeccionBloqueDia);
             console.log('Seccion Bloque Dia creada exitosamente:', seccionBloqueDiaCreada);
             

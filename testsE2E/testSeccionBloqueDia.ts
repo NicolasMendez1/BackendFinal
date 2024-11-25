@@ -10,7 +10,7 @@ async function testSeccionesBloquesDias() {
         const nuevaSeccionBloqueDia = {
             "codigoSeccion": "S2",
             "codigoCurso": "INF-114",
-            "codigoDia": 1,
+            "codigoDia": 4,
             "codigoBloque": 12,
             "esBloqueDeLaboratorio": true
         };
@@ -21,7 +21,7 @@ async function testSeccionesBloquesDias() {
         .expect(201);
 
         await request(app)
-        .delete(`/seccionesBloqueDia/${nuevaSeccionBloqueDia.codigoSeccion},${nuevaSeccionBloqueDia.codigoCurso},${nuevaSeccionBloqueDia.codigoDia},${nuevaSeccionBloqueDia.codigoBloque} `)
+        .delete(`/seccionesBloqueDia/${nuevaSeccionBloqueDia.codigoSeccion}/${nuevaSeccionBloqueDia.codigoCurso}/${nuevaSeccionBloqueDia.codigoDia}/${nuevaSeccionBloqueDia.codigoBloque} `)
         .expect(200);
 
     console.log('>>EXITO<< E2E TestSeccionBloqueDia');
