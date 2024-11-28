@@ -18,13 +18,13 @@ class SeccionBloqueDiaController {
             const id2 = req.params.id2;
             const id3 = parseInt(req.params.id3);
             const id4 = parseInt(req.params.id4);
-            console.log("Eliminado id - id2 - id3 - id4"+ id + id2 + id3 + id4)
             await seccionBloqueDiaRepository.deleteSeccionBloqueDia(id,id2,id3,id4)
             res.status(200).send()
+            console.log("Eliminado id - id2 - id3 - id4"+ id + id2 + id3 + id4)
         } catch (error) {
             console.error('Error al eliminar Seccion Bloque Dia:', error);
             res.status(500).send('Error al eliminar Seccion Bloque Dia');
-        }
+        }   
     }
 
     async createSeccionBloqueDia(req: Request, res: Response) {
@@ -36,12 +36,10 @@ class SeccionBloqueDiaController {
             res.status(201).json(seccionBloqueDiaCreada);
         } catch (error: any) {
             res.status(500).json({
-                error: 'Error al crear seccion bloque dia',
-                details: error.message
+                error: error,
             });
         }
     }
-
 }
 
 export default SeccionBloqueDiaController;

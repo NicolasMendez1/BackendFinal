@@ -6,10 +6,10 @@ import testSeccionesBloquesDias from './testSeccionBloqueDia';
 
 async function runE2ETests() {
     try {
-        // await testCursos();
-        // await testSalas();
-        // await testProfesores();
-        // await testSecciones();
+        await testCursos();
+        await testSalas();
+        await testProfesores();
+        await testSecciones();
         await testSeccionesBloquesDias();
         
     } catch (error) {

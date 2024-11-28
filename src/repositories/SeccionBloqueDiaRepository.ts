@@ -13,13 +13,11 @@ export default class SeccionBloqueDiaRepository {
   }
 
 
-  async deleteSeccionBloqueDia(codigo: string, codigoCurso: string, codigoDia: number, codigoBloque: number) {
+  async deleteSeccionBloqueDia(codigo: string, codigoCurso: string, codigoBloque: number, codigoDia: number) {
     try {
-      const sql = `
-            BEGIN
-              GH_ELIMINAR_SECCION_BLOQUE_DIA(:codigo, :codigoCurso,:codigoDia, :codigoBloque);
-            END;
-          `;
+      const sql = `BEGIN
+        GH_ELIMINAR_SECCION_BLOQUE_DIA( :codigo, :codigoCurso, :codigoDia, :codigoBloque );
+      END;`;
 
       const binds = {
         codigo: codigo,
@@ -27,8 +25,11 @@ export default class SeccionBloqueDiaRepository {
         codigoDia: codigoDia,
         codigoBloque: codigoBloque
       };
-
+      
+      console.log("binds -> ", binds)
       await DbConnection.executeQuery(sql, binds);
+      
+      console.log("binds -> ", binds)
 
     } catch (error) {
       console.error('Error al eliminar seccion bloque dia:', error);
@@ -58,9 +59,10 @@ export default class SeccionBloqueDiaRepository {
 
       return seccionBloqueDia;
 
-    } catch (error) {
-      console.error('Error al crear seccion bloque dia:', error);
-      throw error;
+    } catch (error: any) {
+      const errorMessage = error.message.split('\n')[0].replace(/^ORA-\d{5}:\s?/, '');
+      console.log(errorMessage);
+      throw errorMessage;
     }
   }
 

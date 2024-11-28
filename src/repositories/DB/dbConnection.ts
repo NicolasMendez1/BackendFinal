@@ -48,4 +48,15 @@ export default class DbConnection {
             throw error;
         }
     }
+
+    static async executeQueryWithArrayBinds(query: string, binds: any[] = []): Promise<any> {
+        const connection = await this.getConnection();
+        try {
+            const result = await connection.execute(query, binds, { outFormat: oracledb.OUT_FORMAT_OBJECT });
+            await this.closeConnection();
+            return result.rows;
+        } catch (error) {
+            throw error;
+        }
+    }
 }

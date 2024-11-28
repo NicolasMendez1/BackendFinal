@@ -1,0 +1,2 @@
+DB_CONNECTION_STRING=response-arena.gl.at.ply.gg:2049/xepdb1
+DB_CONNECTION_STRING=172.16.97.60:1521/xepdb1
