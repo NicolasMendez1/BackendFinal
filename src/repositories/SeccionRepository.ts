@@ -55,9 +55,10 @@ export default class SeccionRepository {
 
          return seccion;
 
-        } catch (error) {
-            console.error('Error al crear seccion:', error);
-            throw error;
+        } catch (error: any) {
+            const errorMessage = error.message.split('\n')[0].replace(/^ORA-\d{5}:\s?/, '');
+            console.log(errorMessage);
+            throw errorMessage;
         }
     }
 

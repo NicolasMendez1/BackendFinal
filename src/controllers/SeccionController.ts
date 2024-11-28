@@ -34,8 +34,7 @@ class SeccionController {
             res.status(201).json(seccionCreada);
         } catch (error: any) {
             res.status(500).json({
-                error: 'Error al crear seccion',
-                details: error.message
+                error: error,
             });
         }
     }
