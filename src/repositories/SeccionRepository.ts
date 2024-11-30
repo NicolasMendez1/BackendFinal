@@ -56,6 +56,7 @@ export default class SeccionRepository {
          return seccion;
 
         } catch (error: any) {
+            console.log(error.message);
             const errorMessage = error.message.split('\n')[0].replace(/^ORA-\d{5}:\s?/, '');
             console.log(errorMessage);
             throw errorMessage;
