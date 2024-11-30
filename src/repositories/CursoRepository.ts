@@ -4,8 +4,15 @@ import { Curso } from '../entities/Curso';
 export default class CursoRepository {
     async getCursos(): Promise<Curso[]> {
         try {
-            const rows = await DbConnection.executeQuery('SELECT * FROM GH_CURSO ');
+            //const rows = await DbConnection.executeQuery('SELECT * FROM GH_CURSO ');
+            //return rows.map((row: any) => this.mapRowToJson(row));
+
+            const rows = await DbConnection.executeStoredProcedureWithCursor('obtenerCursos');
+            
+            // Mapeamos las filas obtenidas a la entidad Curso
             return rows.map((row: any) => this.mapRowToJson(row));
+
+
         } catch (error) {
             console.error('Error al consultar cursos:', error);
             throw error;
@@ -116,3 +123,33 @@ async getCursoById(id: number) {
     }
 }
     */
+
+/*
+import DbConnection from './DB/dbConnection';
+import { Curso } from '../entities/Curso';
+
+export default class CursoRepository {
+    async getCursos(): Promise<Curso[]> {
+        try {
+            const rows = await DbConnection.executeQuery('SELECT * FROM GH_CURSO ');
+            return rows.map((row: any) => this.mapRowToJson(row));
+        } catch (error) {
+            console.error('Error al consultar cursos:', error);
+            throw error;
+        }
+    }
+
+    private mapRowToJson(row: any): Curso {
+        return {
+            codigo: row.CODIGO,
+            nombre: row.NOMBRE,
+            horasCatedra: row.HORAS_CATEDRA,
+            horasLaboratorio: row.HORAS_LABORATORIO,
+            nivel: row.NIVEL,
+            esAtemporal: row.ES_ATEMPORAL === 1,
+            esCursoGeneral: row.ES_CURSO_GENERAL === 1,
+            cantidadDeEstudiantes: row.CANTIDAD_DE_ESTUDIANTES
+        };
+    }
+}
+*/

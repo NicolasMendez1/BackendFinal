@@ -59,4 +59,31 @@ export default class DbConnection {
             throw error;
         }
     }
+
+    static async executeStoredProcedureWithCursor(procedureName: string, binds: any[] = []): Promise<any> {
+        const connection = await this.getConnection();
+        try {
+            const result:any = await connection.execute(
+                `BEGIN ${procedureName}(:cursor); END;`, 
+                { cursor: { type: oracledb.CURSOR, dir: oracledb.BIND_OUT } }, 
+                { outFormat: oracledb.OUT_FORMAT_OBJECT }
+            );
+
+            const cursor = result.outBinds.cursor;
+            
+            const rows = [];
+            let row;
+            while ((row = await cursor.getRow())) {
+                rows.push(row);
+            }
+
+            await cursor.close();
+            await this.closeConnection();
+            return rows;
+
+        } catch (error) {
+            console.error('Error al ejecutar el procedimiento almacenado con cursor:', error);
+            throw error;
+        }
+    }
 }
