@@ -5,8 +5,8 @@ export default class ValidarHorarioRepository {
         try {
             const sql = `
             BEGIN
-                GH_PRESENTA_ERROR_HRS_FALTANTES;
-                GH_PRESENTA_ERROR_ESTUDIANTES_FALTANTES;
+                GH_VALIDA_HORARIO_GENERAL;
+                GH_VALIDAR_ESTUDIANTES_SIN_SECCION;
             END;
           `;
             await DbConnection.executeQuery(sql);

@@ -60,6 +60,7 @@ export default class SeccionBloqueDiaRepository {
       return seccionBloqueDia;
 
     } catch (error: any) {
+      console.log(error)
       const errorMessage = error.message.split('\n')[0].replace(/^ORA-\d{5}:\s?/, '');
       console.log(errorMessage);
       throw errorMessage;
